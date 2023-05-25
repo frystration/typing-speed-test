@@ -1,55 +1,51 @@
 <template>
-  <p class="text_display__p">
-      <span v-for="(char, index) in text">
-          <span v-if="index === selected" :class="error ? 'text_display__error' : 'text_display__selected'">
-              {{char}}
-          </span>
-          <span v-else-if="index < selected" class="text_display__span text_display__done">
-              {{char}}
-          </span>
-          <span v-else class="text_display__span">
-              {{char}}
-          </span>
+    <p class="text_display__p">
+      <span class="text_display__span"
+            v-for="(char, index) in text"
+            :key="index"
+            :class="{
+          'text_display__selected': index === selected && !error,
+          'text_display__error': index === selected && error,
+          'text_display__done': index < selected
+        }"
+      >
+        {{ char }}
       </span>
-  </p>
+    </p>
 </template>
 
 <script lang="ts" setup>
 const props = defineProps({
     text: String,
-    selected: Number,
+    selected: {
+        type: Number,
+        default: 0
+    },
     error: Boolean
 })
 </script>
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600&display=swap');
-
-.text_display__p{
+.text_display__p {
     font-family: 'Nunito', sans-serif;
-    font-size: 23px;
+    font-size: 28px;
     line-height: 1.8;
+}
+.text_display__span {
     padding: 1px;
 }
-
-.text_display__span{
-    padding: 1px;
+.text_display__done {
+    color: limegreen;
 }
-
-.text_display__done{
-    color: lightgreen;
-}
-
 .text_display__selected {
-    background-color: lightgreen;
+    background-color: limegreen;
     padding: 1px;
     color: whitesmoke;
 }
-
 .text_display__error {
-    background-color: crimson;
+    background-color: red;
     padding: 1px;
     color: whitesmoke;
 }
-
 </style>

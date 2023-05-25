@@ -1,8 +1,8 @@
 <template>
     <div class="stats_wrapper">
-        <StatsSpeed :selected="selected" :time="time"/>
-        <StatsAccuracy :selected="selected" :errorCount="errorCount"/>
-        <ReloadButton />
+        <StatsSpeed class="wrap" :selected="selected" :time="time"/>
+        <StatsAccuracy class="wrap" :selected="selected" :errorCount="errorCount"/>
+        <ReloadButton class="wrap wrap_button"/>
     </div>
 </template>
 
@@ -19,5 +19,12 @@ const props = defineProps({
 </script>
 
 <style scoped>
-
+.stats_wrapper {
+    display: grid;
+}
+.wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 </style>
