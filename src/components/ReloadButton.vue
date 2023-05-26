@@ -1,7 +1,7 @@
 <template>
     <strong>
         <div class="wrap">
-            <div class="button" @click="$router.go(0)">
+            <div class="button" @click="$router.go('/test')">
                 <div class="icon_wrap">
                     <RepeatIcon :size="26"  class="icon"/>
                     <span class="icon_text">ЗАНОВО</span>

@@ -37,6 +37,12 @@ const text = ref("")
 
 let intervalId = null;
 
+// сделать переключение языка и запись в localstorage
+// сделать проверку выбранного языка в системе и localstorage
+// сделать проверку на капслок
+// если капслок или не тот язык то выводим модальное окно
+// в модальное окно надо добавить кнопку закрыть возможно убрать закрытие по клику вне окна
+
 const handleKeyPress = (event) => {
     if (text.value[selected.value] === event.key) {
         if (selected.value === 0) {
