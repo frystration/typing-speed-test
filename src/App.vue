@@ -1,7 +1,8 @@
 <template>
     <div class="app">
         <Header/>
-        <TypingTest :text-value="text"/>
+        <TypingTest v-if="!isLoading" :text-value="text"/>
+        <div v-else>Зазгрузка...</div>
     </div>
 </template>
 
@@ -18,12 +19,14 @@ export default {
     },
     data() {
         return {
-            text: ""
+            text: "",
+            isLoading: false
         }
     },
     methods: {
         async fetchText() {
             try {
+                this.isLoading = true;
                 const response = await axios.get('https://fish-text.ru/get',
                     {
                         params:
@@ -36,11 +39,21 @@ export default {
                 const text = response.data.text
                 this.text = fixedFetchedText(text)
 
+                // this.text = fixedFetchedText('питер'
+                //     // + 'паркер веном я мешаю с айрн брю \n' +
+                //     // 'она не понимает о чём я щас говорю \n' +
+                //     // 'мери джейн мне похуй таких как ты много шлюх \n' +
+                //     // 'детка да я только для себя и живу эй'
+                // )
+
+
                 // const response = await axios.get('https://baconipsum.com/api/?type=all-meat&paras=1')
                 // const text = response.data[0]
                 // this.text = fixedFetchedText(text)
             } catch (e) {
                 alert("Ошибка API")
+            } finally {
+                this.isLoading = false;
             }
         }
     },

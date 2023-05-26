@@ -38,7 +38,7 @@ watch(
     () => {
 
         const speedV = roundToTwoDecimals((props.selected / props.time) * 60000);
-        if (speedV > 500 || isNaN(speedV)) {
+        if (speedV > 999 || isNaN(speedV)) {
             overSpeed.value = true
         } else {
             overSpeed.value = false

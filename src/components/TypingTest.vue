@@ -3,30 +3,22 @@
         <TextDisplay :text="text" :selected="selected" :error="error"/>
         <Stats :errorCount="errorCount" :selected="selected" :time="time"/>
         <h3 v-if="error" class="typing_test__error">Неправильная буква</h3>
-        <Modal variant="danger" :visible="modal">
-            <p class="text-center text-info">Так держать!</p>
+        <Dialog v-model:show="showDialog">
             <StatsAccuracy :errorCount="errorCount" :selected="selected"/>
             <StatsSpeed :time="time" :selected="selected"/>
-        </Modal>
+            <ReloadButton/>
+        </Dialog>
     </div>
 </template>
 
 <script setup>
 import TextDisplay from "./TextDisplay.vue";
 import Stats from "./Stats.vue";
-import {onBeforeMount, onBeforeUnmount, onMounted, ref, watch} from "vue";
-import Modal from "./Modal.vue";
+import {onBeforeUnmount, ref, watch} from "vue";
 import StatsAccuracy from "./StatsAccuracy.vue";
 import StatsSpeed from "./StatsSpeed.vue";
-
-
-const error = ref(false)
-const selected = ref(0)
-const date = ref(0)
-const time = ref(0)
-const errorCount = ref(0)
-
-const modal = ref(false)
+import Dialog from "./Dialog.vue";
+import ReloadButton from "./ReloadButton.vue";
 
 const props = defineProps({
     textValue: {
@@ -34,32 +26,36 @@ const props = defineProps({
         required: true,
     }
 })
+
+const error = ref(false)
+const selected = ref(0)
+const startTime = ref(0)
+const time = ref(0)
+const errorCount = ref(0)
+const showDialog = ref(false)
 const text = ref("")
 
-// мы можем выызвать Date.now() с интервалом в 500 если date.value не равно нулю чтобы всегда считалось время
-// и внутри интервала прирванивать time.value = Date.now() - date.value
-// тогда скорость будет обновялться независимо от наших действий
+let intervalId = null;
 
 const handleKeyPress = (event) => {
     if (text.value[selected.value] === event.key) {
         if (selected.value === 0) {
-            date.value = Date.now()
+            startTime.value = Date.now()
+            intervalId = setInterval(() => {
+                time.value = Date.now() - startTime.value
+            }, 300)
         }
         if (selected.value === text.value.length - 1) {
-            time.value = Date.now() - date.value
-            modal.value = true
+            showDialog.value = true
             // Для алерта придется использовать глобальный стор чтоб был досттуп к скорости ото всех элементов
-            // Тут должно вылезти модальное окно
-            // alert(speed.value + ' знаков в минуту')
             window.removeEventListener('keypress', handleKeyPress)
+            clearInterval(intervalId)
         }
         error.value = false;
         selected.value = selected.value + 1
-        time.value = Date.now() - date.value
     } else {
         error.value = true;
         errorCount.value = errorCount.value + 1;
-        time.value = Date.now() - date.value
     }
 }
 
@@ -73,6 +69,7 @@ watch(
 );
 onBeforeUnmount(() => {
     window.removeEventListener('keypress', handleKeyPress)
+    clearInterval(intervalId)
 })
 </script>
 
