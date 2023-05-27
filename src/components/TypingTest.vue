@@ -1,24 +1,23 @@
 <template>
     <div class="typing_test">
         <TextDisplay :text="text" :selected="selected" :error="error"/>
-        <Stats :errorCount="errorCount" :selected="selected" :time="time"/>
-        <h3 v-if="error" class="typing_test__error">Неправильная буква</h3>
-        <Dialog v-model:show="showDialog">
-            <StatsAccuracy :errorCount="errorCount" :selected="selected"/>
+        <Stats :errorCount="errorCount" :error="error" :selected="selected" :time="time"/>
+        <my-dialog v-model:show="showDialog">
+            <StatsAccuracy :error="error" :errorCount="errorCount" :selected="selected"/>
             <StatsSpeed :time="time" :selected="selected"/>
             <ReloadButton/>
-        </Dialog>
+        </my-dialog>
     </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import TextDisplay from "./TextDisplay.vue";
 import Stats from "./Stats.vue";
 import {onBeforeUnmount, ref, watch} from "vue";
 import StatsAccuracy from "./StatsAccuracy.vue";
 import StatsSpeed from "./StatsSpeed.vue";
-import Dialog from "./Dialog.vue";
 import ReloadButton from "./ReloadButton.vue";
+import MyDialog from "@/components/UI/MyDialog.vue";
 
 const props = defineProps({
     textValue: {
@@ -49,7 +48,7 @@ const handleKeyPress = (event) => {
             startTime.value = Date.now()
             intervalId = setInterval(() => {
                 time.value = Date.now() - startTime.value
-            }, 300)
+            }, 400)
         }
         if (selected.value === text.value.length - 1) {
             showDialog.value = true
@@ -68,7 +67,7 @@ const handleKeyPress = (event) => {
 watch(
     () => [props.textValue],
     () => {
-        text.value = props.textValue
+        text.value = <string>props.textValue
         window.addEventListener("keypress", handleKeyPress)
     },
     {immediate: true}
@@ -90,9 +89,5 @@ onBeforeUnmount(() => {
     color: darkslategrey;
     display: grid;
     grid-template-columns: 80% 20%;
-}
-
-.typing_test__error {
-    color: red;
 }
 </style>

@@ -1,14 +1,17 @@
 <template>
-  <div>
-      <h1>HOME</h1>
-      <router-link to="/test">TEST</router-link>
-      <router-link to="/about">ABOUT</router-link>
+  <div class="home">
+      <h1 >HOME</h1>
   </div>
 </template>
 
-<script>
+<script lang="ts" setup>
 </script>
 
 <style scoped>
-
+.home {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100% - 80px);
+}
 </style>

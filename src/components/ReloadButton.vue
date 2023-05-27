@@ -1,32 +1,23 @@
 <template>
-    <strong>
-        <div class="wrap">
-            <div class="button" @click="$router.go('/test')">
-                <div class="icon_wrap">
-                    <RepeatIcon :size="26"  class="icon"/>
-                    <span class="icon_text">ЗАНОВО</span>
-                </div>
+    <my-button @click="$router.go(0)" class="button">
+            <div class="icon_wrap">
+                <RepeatIcon :size="26"  class="icon"/>
+                <span class="icon_text">ЗАНОВО</span>
             </div>
-        </div>
-    </strong>
+    </my-button>
 </template>
 
-<script>
-import {defineComponent} from "vue";
+<script lang="ts" setup>
 import RepeatIcon from "./icons/Repeat.vue";
-import SpeedIcon from "./icons/Speed.vue";
-
-export default defineComponent({
-    components: {SpeedIcon, RepeatIcon}
-})
+import MyButton from "@/components/UI/MyButton.vue";
 </script>
 
 <style scoped>
-.wrap {
-    padding: 5px;
-}
-.icon {
-    padding: 1px;
+.button {
+    cursor: pointer;
+    color: limegreen;
+    fillColor: limegreen;
+    height: 70px;
 }
 .icon_wrap{
     display: flex;
@@ -34,17 +25,15 @@ export default defineComponent({
     justify-content: center;
     flex-direction: row;
 }
-.icon_text {
-    padding: 1px;
-    font-size: 26px;
+.icon {
+    padding: 2px;
 }
-.button {
-    cursor: pointer;
-    color: limegreen;
-    fill-color: limegreen;
+.icon_text {
+    font-size: 26px;
+    font-weight: bold;
 }
 .button:hover {
     color: green;
-    fill-color: green;
+    fillColor: green;
 }
 </style>

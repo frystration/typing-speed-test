@@ -18,7 +18,7 @@ function truncateString(text: string, maxLength: number): string {
 }
 
 
-function fixedFetchedText(text: string): string {
+function fixFetchedText(text: string): string {
     let newText = text
         .replace(/\\n+/g, " ") // Убираем перенос на следующую строку
         .replace(/—/g, "-").replace(/–/g, "-") // Убираем длинные тире
@@ -28,4 +28,4 @@ function fixedFetchedText(text: string): string {
 
     return newText
 }
-export default fixedFetchedText;
+export default fixFetchedText;

@@ -1,11 +1,15 @@
 <template>
     <strong>
-        <div class="wrap">
+        <div
+            class="wrap"
+        >
             <div class="icon_wrap">
                 <BullseyeIcon :size="26" class="icon"/>
                 <span class="icon_text">ТОЧНОСТЬ</span>
             </div>
-            <div class="accuracy">
+            <div
+                :class="{'error': error,'accuracy': !error,}"
+            >
                 <span class="accuracy_value">{{ accuracy }}</span>
                 <span class="accuracy_text">%</span>
             </div>
@@ -26,13 +30,17 @@ const props = defineProps({
     errorCount: {
         type: Number,
         required: true
-    }
+    },
+    error: {
+        type: Boolean,
+        required: true
+    },
 })
 
 const accuracy = ref(100)
 
 watch(
-    () => [props.selected, props.errorCount],
+    () => [props.selected, props.errorCount, props.error],
     () => {
         accuracy.value = roundToTwoDecimals((props.selected / (props.selected + props.errorCount)) * 100)
         if (isNaN(accuracy.value)) {
@@ -67,7 +75,9 @@ watch(
 .accuracy {
     color: deepskyblue;
 }
-
+.error{
+    color: red;
+}
 .accuracy_value {
     font-size: 36px;
     padding: 1px;

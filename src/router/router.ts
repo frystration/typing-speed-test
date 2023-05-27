@@ -2,9 +2,9 @@ import {createRouter, createWebHistory} from "vue-router";
 // @ts-ignore
 import Home from '@/views/Home.vue'
 // @ts-ignore
-import Test from "@/views/Test.vue";
-// @ts-ignore
 import About from "@/views/About.vue";
+// @ts-ignore
+import Test from "@/views/Test.vue";
 
 const routes = [
     {
@@ -18,7 +18,7 @@ const routes = [
     {
         path: "/about",
         component: About
-    }
+    },
 ];
 
 const router = createRouter({

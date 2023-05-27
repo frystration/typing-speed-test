@@ -33,19 +33,21 @@ const props = defineProps({
     line-height: 1.8;
 }
 .text_display__span {
-    padding: 1px;
+    padding-right: 1px;
 }
 .text_display__done {
     color: limegreen;
 }
 .text_display__selected {
     background-color: limegreen;
-    padding: 1px;
+    /*padding: 1px;*/
     color: whitesmoke;
+    border-radius: 4px;
 }
 .text_display__error {
     background-color: red;
-    padding: 1px;
+    /*padding: 1px;*/
     color: whitesmoke;
+    border-radius: 4px;
 }
 </style>

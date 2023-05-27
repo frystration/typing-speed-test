@@ -36,8 +36,7 @@ const overSpeed = ref(true)
 watch(
     () => [props.selected, props.time],
     () => {
-
-        const speedV = roundToTwoDecimals((props.selected / props.time) * 60000);
+        const speedV = Math.ceil((props.selected / props.time) * 60000);
         if (speedV > 999 || isNaN(speedV)) {
             overSpeed.value = true
         } else {

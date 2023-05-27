@@ -6,16 +6,16 @@
     </header>
 </template>
 
-<script>
+<script lang="ts" setup>
 </script>
 
 <style scoped>
 .header {
     background: cornflowerblue;
     width: 80%;
-    margin: 10px auto;
     border-radius: 25px;
     padding: 10px 0;
+    margin: 30px auto;
 }
 .header__h1 {
     color: whitesmoke;

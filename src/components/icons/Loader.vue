@@ -2,7 +2,7 @@
     <div class="lds-circle"><div></div></div>
 </template>
 
-<script>
+<script lang="ts">
 export default {
     name: "Loader"
 }
@@ -19,7 +19,7 @@ export default {
     height: 64px;
     margin: 8px;
     border-radius: 50%;
-    background: #cef;
+    background: purple;
     animation: lds-circle 2.4s cubic-bezier(0, 0.2, 0.8, 1) infinite;
 }
 @keyframes lds-circle {
