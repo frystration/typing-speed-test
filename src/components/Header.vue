@@ -1,8 +1,8 @@
 <template>
     <header class="header">
-        <h1 class="header__h1">
+        <h2 class="header__h1">
             Тест скорости печати
-        </h1>
+        </h2>
     </header>
 </template>
 
@@ -12,10 +12,10 @@
 <style scoped>
 .header {
     background: cornflowerblue;
-    width: 80%;
+    width: 70%;
+    min-width: 1100px;
     border-radius: 25px;
     padding: 10px 0;
-    margin: 30px auto;
 }
 .header__h1 {
     color: whitesmoke;

@@ -15,22 +15,24 @@
 </template>
 
 <script lang="ts" setup>
+import {useStore} from "vuex";
+import {computed} from "vue";
+
 const props = defineProps({
-    text: String,
-    selected: {
-        type: Number,
-        default: 0
-    },
-    error: Boolean
+    text: String
 })
+
+const store = useStore();
+
+const error = computed(() => store.getters.getError)
+const selected = computed(() => store.getters.getSelected)
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600&display=swap');
 .text_display__p {
-    font-family: 'Nunito', sans-serif;
-    font-size: 28px;
-    line-height: 1.8;
+    font-family: 'Georgia', sans-serif;
+    font-size: 26px;
+    line-height: 1.6;
 }
 .text_display__span {
     padding-right: 1px;
@@ -40,13 +42,11 @@ const props = defineProps({
 }
 .text_display__selected {
     background-color: limegreen;
-    /*padding: 1px;*/
     color: whitesmoke;
     border-radius: 4px;
 }
 .text_display__error {
     background-color: red;
-    /*padding: 1px;*/
     color: whitesmoke;
     border-radius: 4px;
 }

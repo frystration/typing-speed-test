@@ -1,8 +1,12 @@
 <template>
-    <div class="stats_wrapper">
-        <StatsSpeed class="wrap" :selected="selected" :time="time"/>
-        <StatsAccuracy :error="error" class="wrap" :selected="selected" :errorCount="errorCount"/>
-        <ReloadButton class="wrap wrap_button"/>
+    <div class="wrapper">
+        <div class="stats">
+            <StatsSpeed />
+            <StatsAccuracy  />
+        </div>
+        <div class="button">
+            <ReloadButton />
+        </div>
     </div>
 </template>
 
@@ -10,34 +14,13 @@
 import StatsSpeed from "./StatsSpeed.vue";
 import StatsAccuracy from "./StatsAccuracy.vue";
 import ReloadButton from "./ReloadButton.vue";
-
-const props = defineProps({
-    selected: {
-        type: Number,
-        required: true
-    },
-    time: {
-        type: Number,
-        default: 0
-    },
-    errorCount: {
-        type: Number,
-        default: 0
-    },
-    error: {
-        type: Boolean,
-        default: false
-    }
-})
 </script>
 
 <style scoped>
-.stats_wrapper {
-    display: grid;
-}
-.wrap {
+.wrapper {
     display: flex;
-    align-items: center;
-    justify-content: center;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: space-between;
 }
 </style>

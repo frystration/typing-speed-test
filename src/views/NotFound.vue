@@ -1,17 +1,18 @@
 <template>
-  <div class="about">
-      <h1>ABOUT</h1>
-  </div>
+    <div class="not_found">
+        <h1>404</h1>
+    </div>
 </template>
 
 <script lang="ts" setup>
 </script>
 
 <style scoped>
-.about {
+.not_found {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: calc(100% - 80px);
+    height: 100%;
+    width: 100%;
 }
 </style>

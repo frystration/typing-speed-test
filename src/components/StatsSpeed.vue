@@ -14,35 +14,23 @@
 </template>
 
 <script lang="ts" setup>
-import {ref, watch} from "vue";
-import roundToTwoDecimals from "../utils/roundToTwoDecimals.ts";
+import {computed, ref, watch} from "vue";
 import SpeedIcon from "./icons/Speed.vue";
-import BullseyeIcon from "./icons/Bullseye.vue";
+import {useStore} from "vuex";
 
-const props = defineProps({
-    selected: {
-        type: Number,
-        required: true
-    },
-    time: {
-        type: Number,
-        required: true
-    }
-})
+const store = useStore();
 
-const speed = ref(0)
+const time = computed(() => store.getters.getTime);
+
+const speed = computed(() => store.getters.getTypingSpeed)
+
 const overSpeed = ref(true)
 
 watch(
-    () => [props.selected, props.time],
+    () => [time.value],
     () => {
-        const speedV = Math.ceil((props.selected / props.time) * 60000);
-        if (speedV > 999 || isNaN(speedV)) {
-            overSpeed.value = true
-        } else {
-            overSpeed.value = false
-            speed.value = speedV
-        }
+        overSpeed.value = speed.value > 999
+        store.dispatch("calculateSpeed")
     },
     { immediate: true }
 );

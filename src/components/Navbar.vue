@@ -1,10 +1,9 @@
 <template>
     <div class="navbar">
-        <my-button @click="$router.push('/')">TITLE</my-button>
+        <my-button @click="$router.push('/')">Home</my-button>
         <div class="navbar__buttons">
-            <my-select v-model="selectedLanguage" :options="languages"></my-select>
-            <my-button @click="$router.push('/test')">Пройти тест</my-button>
-            <my-button @click="$router.push('/about')">О сайте</my-button>
+            <my-select v-model="selectedLanguage" :options="languages" :value="selectedLanguage"></my-select>
+            <my-button @click="$router.push(`/test/${selectedLanguage}`)">Пройти тест</my-button>
         </div>
     </div>
 </template>
@@ -18,20 +17,22 @@ import {computed, ref} from "vue";
 const languages = [
     { value: 'en', name: 'English' },
     { value: 'ru', name: 'Русский' },
-    { value: 'mock', name: 'Тест' }
+    { value: 'test', name: 'Тест' }
 ];
 
 const store = useStore();
 
 const selectedLanguage = computed({
     get: () => store.getters.getSelectedLanguage,
-    set: (value) => store.dispatch('setSelectedLanguage', value)
+    set: (value) => store.commit("setSelectedLanguage", value)
 });
 
 </script>
 
 <style scoped>
 .navbar {
+    position: fixed;
+    width: 100%;
     height: 80px;
     background-color: mediumpurple;
     display: flex;
@@ -44,5 +45,6 @@ const selectedLanguage = computed({
     display: flex;
     flex-direction: row;
     border-radius: 10px;
+    justify-content: space-between;
 }
 </style>

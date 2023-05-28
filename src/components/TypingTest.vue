@@ -1,11 +1,23 @@
 <template>
     <div class="typing_test">
-        <TextDisplay :text="text" :selected="selected" :error="error"/>
-        <Stats :errorCount="errorCount" :error="error" :selected="selected" :time="time"/>
-        <my-dialog v-model:show="showDialog">
-            <StatsAccuracy :error="error" :errorCount="errorCount" :selected="selected"/>
-            <StatsSpeed :time="time" :selected="selected"/>
-            <ReloadButton/>
+        <TextDisplay class="text" :text="text"/>
+        <Stats />
+        <my-dialog v-model:show="successDialog">
+            <div class="dialog__stats">
+                <StatsAccuracy/>
+                <StatsSpeed/>
+            </div>
+            <div class="dialog__reload">
+                <ReloadButton/>
+            </div>
+        </my-dialog>
+        <my-dialog v-model:show="languageError">
+            <div class="dialog__lang">
+                <h2>СМЕНИТЕ РАСКЛАДКУ</h2>
+            </div>
+            <div class="dialog__reload">
+                <ReloadButton/>
+            </div>
         </my-dialog>
     </div>
 </template>
@@ -13,54 +25,55 @@
 <script lang="ts" setup>
 import TextDisplay from "./TextDisplay.vue";
 import Stats from "./Stats.vue";
-import {onBeforeUnmount, ref, watch} from "vue";
+import {computed, onBeforeUnmount, ref, watch} from "vue";
 import StatsAccuracy from "./StatsAccuracy.vue";
 import StatsSpeed from "./StatsSpeed.vue";
 import ReloadButton from "./ReloadButton.vue";
 import MyDialog from "@/components/UI/MyDialog.vue";
+import isEnglishLetter from "@/utils/isEnglishLetter.ts";
+import isRussianLetter from "@/utils/isRussianLetter.ts";
+import {useStore} from "vuex";
 
 const props = defineProps({
     textValue: {
         type: String,
         required: true,
+    },
+    language: {
+        type: String,
+        required: true
     }
 })
+const store = useStore();
 
-const error = ref(false)
-const selected = ref(0)
-const startTime = ref(0)
-const time = ref(0)
-const errorCount = ref(0)
-const showDialog = ref(false)
+const selected = computed(() => store.getters.getSelected);
+const error = computed(() => store.getters.getError);
+
 const text = ref("")
-
-let intervalId = null;
-
-// сделать переключение языка и запись в localstorage
-// сделать проверку выбранного языка в системе и localstorage
-// сделать проверку на капслок
-// если капслок или не тот язык то выводим модальное окно
-// в модальное окно надо добавить кнопку закрыть возможно убрать закрытие по клику вне окна
+const languageError = ref(false)
+const successDialog = ref(false)
 
 const handleKeyPress = (event) => {
+    if ((isEnglishLetter(event.key) && props.language === 'ru')
+        || (isRussianLetter(event.key) && props.language === 'en')) {
+        languageError.value = true
+    }
     if (text.value[selected.value] === event.key) {
         if (selected.value === 0) {
-            startTime.value = Date.now()
-            intervalId = setInterval(() => {
-                time.value = Date.now() - startTime.value
-            }, 400)
+            store.dispatch("startTimer");
         }
         if (selected.value === text.value.length - 1) {
-            showDialog.value = true
-            // Для алерта придется использовать глобальный стор чтоб был досттуп к скорости ото всех элементов
+            successDialog.value = true
             window.removeEventListener('keypress', handleKeyPress)
-            clearInterval(intervalId)
+            store.dispatch("stopTimer");
         }
-        error.value = false;
-        selected.value = selected.value + 1
+        store.commit("setError", false)
+        store.commit("incrementSelected");
     } else {
-        error.value = true;
-        errorCount.value = errorCount.value + 1;
+        if (!error.value) {
+            store.commit("setError", true)
+            store.commit("incrementErrorCount")
+        }
     }
 }
 
@@ -71,23 +84,41 @@ watch(
         window.addEventListener("keypress", handleKeyPress)
     },
     {immediate: true}
-);
+)
 onBeforeUnmount(() => {
-    window.removeEventListener('keypress', handleKeyPress)
-    clearInterval(intervalId)
+    window.removeEventListener("keypress", handleKeyPress)
+    store.dispatch("stopTimer");
+    store.commit("resetState");
 })
 </script>
 
-<style>
+<style scoped>
 .typing_test {
     background-color: lightcyan;
     height: fit-content;
-    width: 70%;
-    margin: 2em auto;
+    width: 65%;
+    min-width: 1000px;
+    margin: 20px;
     padding: 10px 15px;
     border-radius: 15px;
     color: darkslategrey;
-    display: grid;
-    grid-template-columns: 80% 20%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.text {
+    flex: 1 1 auto;
+}
+
+.dialog__stats {
+    display: flex;
+    flex-direction: row-reverse;
+}
+.dialog__reload {
+    align-self:flex-end;
+}
+.dialog__lang {
+    padding-bottom: 40px;
 }
 </style>

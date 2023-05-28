@@ -3,7 +3,7 @@ import {ref, watch} from "vue";
 import axios from "axios";
 
 export const useTextFetching = () => {
-    const selectedLanguage = ref("ru");
+    const selectedLanguage = ref("");
     const text = ref("");
     const isLoading = ref(true);
 
@@ -65,8 +65,7 @@ export const useTextFetching = () => {
         () => {
             isLoading.value = true;
             fetchingData();
-        },
-        {immediate: true}
+        }
     );
 
     return {

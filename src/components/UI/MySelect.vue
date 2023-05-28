@@ -36,6 +36,8 @@ export default {
 }
 
 .select {
+    width: fit-content;
+    height: 50px;
     padding: 10px 15px;
     margin: 10px;
     cursor: pointer;
