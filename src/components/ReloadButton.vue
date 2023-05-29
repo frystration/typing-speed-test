@@ -1,7 +1,7 @@
 <template>
     <my-button @click="$router.go(0)" class="button">
             <div class="icon_wrap">
-                <RepeatIcon :size="26"  class="icon"/>
+                <RepeatIcon :size="26" class="icon"/>
                 <span class="icon_text">ЗАНОВО</span>
             </div>
     </my-button>
@@ -9,7 +9,7 @@
 
 <script lang="ts" setup>
 import RepeatIcon from "./icons/Repeat.vue";
-import MyButton from "@/components/UI/MyButton.vue";
+import MyButton from "./UI/MyButton.vue";
 </script>
 
 <style scoped>

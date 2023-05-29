@@ -1,7 +1,7 @@
 <template>
     <div class="typing_test">
         <TextDisplay class="text" :text="text"/>
-        <Stats />
+        <Stats/>
         <my-dialog v-model:show="successDialog">
             <div class="dialog__stats">
                 <StatsAccuracy/>
@@ -25,37 +25,37 @@
 <script lang="ts" setup>
 import TextDisplay from "./TextDisplay.vue";
 import Stats from "./Stats.vue";
-import {computed, onBeforeUnmount, ref, watch} from "vue";
+import {computed, onBeforeUnmount, Ref, ref, watch} from "vue";
 import StatsAccuracy from "./StatsAccuracy.vue";
 import StatsSpeed from "./StatsSpeed.vue";
 import ReloadButton from "./ReloadButton.vue";
-import MyDialog from "@/components/UI/MyDialog.vue";
-import isEnglishLetter from "@/utils/isEnglishLetter.ts";
-import isRussianLetter from "@/utils/isRussianLetter.ts";
+
 import {useStore} from "vuex";
+import MyDialog from "./UI/MyDialog.vue";
+import isEnglishLetter from "../utils/isEnglishLetter.ts";
+import isRussianLetter from "../utils/isRussianLetter.ts";
+import {key} from "../store";
+import {Language, LanguageValue} from "../types";
 
-const props = defineProps({
-    textValue: {
-        type: String,
-        required: true,
-    },
-    language: {
-        type: String,
-        required: true
-    }
-})
-const store = useStore();
+interface Props {
+    textValue: string
+    language: LanguageValue
+}
 
-const selected = computed(() => store.getters.getSelected);
-const error = computed(() => store.getters.getError);
+const props = defineProps<Props>()
 
-const text = ref("")
-const languageError = ref(false)
-const successDialog = ref(false)
+const store = useStore(key);
+
+const selected = computed<number>(() => store.getters.getSelected);
+const error = computed<boolean>(() => store.getters.getError);
+
+const text: Ref<string> = ref("")
+const languageError: Ref<boolean> = ref(false)
+const successDialog: Ref<boolean> = ref(false)
 
 const handleKeyPress = (event) => {
-    if ((isEnglishLetter(event.key) && props.language === 'ru')
-        || (isRussianLetter(event.key) && props.language === 'en')) {
+    if ((isEnglishLetter(event.key) && props.language === Language.RU)
+        || (isRussianLetter(event.key) && props.language === Language.EN)) {
         languageError.value = true
     }
     if (text.value[selected.value] === event.key) {
@@ -70,7 +70,7 @@ const handleKeyPress = (event) => {
         store.commit("setError", false)
         store.commit("incrementSelected");
     } else {
-        if (!error.value) {
+        if (!error.value && selected.value !== 0) {
             store.commit("setError", true)
             store.commit("incrementErrorCount")
         }
@@ -115,9 +115,11 @@ onBeforeUnmount(() => {
     display: flex;
     flex-direction: row-reverse;
 }
+
 .dialog__reload {
-    align-self:flex-end;
+    align-self: flex-end;
 }
+
 .dialog__lang {
     padding-bottom: 40px;
 }

@@ -6,14 +6,20 @@
     </div>
 </template>
 
-<script lang="ts">
-import toggleMixin from "@/components/mixins/toggleMixin.ts";
-
-export default {
-    name: "my-dialog",
-    mixins: [toggleMixin]
+<script setup lang="ts">
+interface Props {
+    show: boolean
 }
-// в модальное окно надо добавить кнопку закрыть возможно убрать закрытие по клику вне окна
+withDefaults(defineProps<Props>(), {
+    show: false
+})
+
+const emit = defineEmits<{
+    (e: 'update:show', value: boolean): void
+}>()
+const hideDialog = (): void => {
+    emit('update:show', false);
+}
 </script>
 
 <style scoped>

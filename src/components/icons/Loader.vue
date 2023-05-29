@@ -2,10 +2,7 @@
     <div class="lds-circle"><div></div></div>
 </template>
 
-<script lang="ts">
-export default {
-    name: "Loader"
-}
+<script setup lang="ts">
 </script>
 
 <style scoped>

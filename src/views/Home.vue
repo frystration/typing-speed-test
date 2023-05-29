@@ -1,7 +1,7 @@
 <template>
     <div class="home">
         <button class="button" @click="$router.push(`/test/${selectedLanguage}`)">
-            <div class="home_button_text">Пройти тест</div>
+            <span class="home_button_text">Пройти тест</span>
         </button>
     </div>
 </template>
@@ -9,10 +9,11 @@
 <script lang="ts" setup>
 import {useStore} from "vuex";
 import {computed} from "vue";
+import {key} from "../store";
 
-const store = useStore();
+const store = useStore(key);
 
-const selectedLanguage = computed({
+const selectedLanguage = computed<string>({
     get: () => store.getters.getSelectedLanguage,
     set: (value) => store.commit("setSelectedLanguage", value)
 });

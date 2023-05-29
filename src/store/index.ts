@@ -1,11 +1,18 @@
-// @ts-ignore
-import {createStore} from "vuex";
-import {languageModule} from "@/store/languageModule.ts";
-import {typingStatsModule} from "@/store/typingStatsModule.ts";
+import { InjectionKey } from 'vue'
+import { createStore, Store } from 'vuex'
+import {languageModule, LanguageState} from "./languageModule.ts";
+import {typingStatsModule, TypingStatsState} from "./typingStatsModule.ts";
 
-export default createStore({
+
+export interface RootState {
+    typingStats: TypingStatsState;
+    language: LanguageState;
+}
+export const key: InjectionKey<Store<RootState>> = Symbol()
+export const store = createStore<RootState>({
     modules: {
         text: languageModule,
         typingStats: typingStatsModule
     }
 })
+

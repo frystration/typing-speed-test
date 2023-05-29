@@ -9,24 +9,25 @@
     </div>
 </template>
 
-<script>
-export default {
-    name: 'my-select',
-    props: {
-        modelValue: {
-            type: String,
-        },
-        options: {
-            type: Array,
-            default: () => [],
-        },
-    },
-    methods: {
-        changeOption(event) {
-            this.$emit('update:modelValue', event.target.value);
-        },
-    },
-};
+<script setup lang="ts">
+export interface Option {
+    value: string;
+    name: string;
+}
+
+export interface Props {
+    modelValue: string;
+    options: Option[];
+}
+
+defineProps<Props>()
+
+const emit = defineEmits<{
+    (e: 'update:modelValue', value: string): void
+}>()
+const changeOption = (event: Event) => {
+    emit('update:modelValue', (event.target as HTMLInputElement).value);
+}
 </script>
 
 <style scoped>
@@ -65,12 +66,12 @@ export default {
     pointer-events: none;
 }
 
-.select_option_title{
+.select_option_title {
     background: plum;
     color: whitesmoke;
 }
 
-.select_option{
+.select_option {
     background: slateblue;
     color: whitesmoke;
 }

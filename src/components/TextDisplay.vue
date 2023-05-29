@@ -17,20 +17,21 @@
 <script lang="ts" setup>
 import {useStore} from "vuex";
 import {computed} from "vue";
+import {key} from "../store";
+interface Props {
+    text: string
+}
+defineProps<Props>()
 
-const props = defineProps({
-    text: String
-})
+const store = useStore(key);
 
-const store = useStore();
-
-const error = computed(() => store.getters.getError)
-const selected = computed(() => store.getters.getSelected)
+const error = computed<boolean>(() => store.getters.getError)
+const selected = computed<number>(() => store.getters.getSelected)
 </script>
 
 <style scoped>
 .text_display__p {
-    font-family: 'Georgia', sans-serif;
+    font-family: Nunito, sans-serif;
     font-size: 26px;
     line-height: 1.6;
 }

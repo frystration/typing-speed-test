@@ -9,22 +9,18 @@
 </template>
 
 <script lang="ts" setup>
-import MyButton from "@/components/UI/MyButton.vue";
-import MySelect from "@/components/UI/MySelect.vue";
 import {useStore} from "vuex";
-import {computed, ref} from "vue";
+import {computed} from "vue";
+import MyButton from "./UI/MyButton.vue";
+import MySelect from "./UI/MySelect.vue";
+import {key} from "../store";
+import {languages, LanguageValue} from "../types";
 
-const languages = [
-    { value: 'en', name: 'English' },
-    { value: 'ru', name: 'Русский' },
-    { value: 'test', name: 'Тест' }
-];
+const store = useStore(key);
 
-const store = useStore();
-
-const selectedLanguage = computed({
+const selectedLanguage = computed<LanguageValue>({
     get: () => store.getters.getSelectedLanguage,
-    set: (value) => store.commit("setSelectedLanguage", value)
+    set: (value: LanguageValue) => store.commit("setSelectedLanguage", value)
 });
 
 </script>

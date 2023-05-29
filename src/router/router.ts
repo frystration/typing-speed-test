@@ -1,10 +1,8 @@
 import {createRouter, createWebHistory} from "vue-router";
-// @ts-ignore
-import Home from '@/views/Home.vue'
-// @ts-ignore
-import NotFound from "@/views/NotFound.vue";
-// @ts-ignore
-import Test from "@/views/Test.vue";
+import Home from "../views/Home.vue";
+import Test from "../views/Test.vue";
+import NotFound from "../views/NotFound.vue";
+import {Language} from "../types";
 
 const routes = [
     {
@@ -13,15 +11,15 @@ const routes = [
     },
     {
         path: "/test",
-        redirect: "/test/ru"
+        redirect: `/test/${Language.RU}`
     },
     {
-        path: "/test/:lang(\\bru|en|test\\b)",
+        path: "/test/:lang(en|ru|test)",
         component: Test
     },
     {
         path: "/test/:invalidLang(.*)", // Добавленный маршрут для недопустимых значений :lang
-        redirect: "/test/ru"
+        redirect: `/test/${Language.RU}`
     },
     {
         path: "/404",

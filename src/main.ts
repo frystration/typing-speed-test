@@ -1,14 +1,14 @@
-import { createApp } from 'vue'
-import router from '@/router/router.ts'
-// @ts-ignore
-import App from "@/App.vue";
+import {createApp} from 'vue'
+import App from "./App.vue";
+import router from "./router/router.ts";
+import {store, key} from "./store";
+
 import 'bootstrap/dist/css/bootstrap.min.css';
-import  'bootstrap';
+import 'bootstrap';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import store from "@/store";
 
 
 createApp(App)
     .use(router)
-    .use(store)
+    .use(store, key)
     .mount('#app')

@@ -1,5 +1,4 @@
 <template>
-    <strong>
         <div
                 class="wrap"
         >
@@ -14,21 +13,22 @@
                 <span class="accuracy_text">%</span>
             </div>
         </div>
-    </strong>
 </template>
 
 <script lang="ts" setup>
-import {computed, ref, watch} from "vue";
+import {computed, watch} from "vue";
 import BullseyeIcon from "./icons/Bullseye.vue";
 import {useStore} from "vuex";
+import {key} from "../store";
 
-const store = useStore();
+const store = useStore(key);
 
-const error = computed(() => store.getters.getError)
-const accuracy = computed(() => store.getters.getTypingAccuracy)
+const error = computed<boolean>(() => store.getters.getError)
+const selected = computed<number>(() => store.getters.getSelected)
+const accuracy = computed<number>(() => store.getters.getTypingAccuracy)
 
 watch(
-    () => [error.value],
+    () => [error.value, selected.value],
     () => {
         store.dispatch("calculateAccuracy")
     },
@@ -59,6 +59,7 @@ watch(
 .icon_text {
     padding: 1px;
     font-size: 26px;
+    font-weight: bold;
 }
 
 .accuracy {
@@ -72,10 +73,12 @@ watch(
 .accuracy_value {
     font-size: 36px;
     padding: 1px;
+    font-weight: bolder;
 }
 
 .accuracy_text {
     font-size: 12px;
     padding: 1px;
+    font-weight: bolder;
 }
 </style>

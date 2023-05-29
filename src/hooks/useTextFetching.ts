@@ -1,11 +1,12 @@
-import fixFetchedText from "@/utils/fixFetchedText.ts";
-import {ref, watch} from "vue";
+import {Ref, ref, watch} from "vue";
 import axios from "axios";
+import fixFetchedText from "../utils/fixFetchedText.ts";
+import {Language, LanguageValue} from "../types";
 
 export const useTextFetching = () => {
-    const selectedLanguage = ref("");
-    const text = ref("");
-    const isLoading = ref(true);
+    const selectedLanguage: Ref<LanguageValue | ""> = ref("");
+    const text: Ref<string> = ref("");
+    const isLoading: Ref<boolean> = ref(true);
 
     const fetchingMock = async () => {
         try {
@@ -51,11 +52,11 @@ export const useTextFetching = () => {
     };
 
     const fetchingData = () => {
-        if (selectedLanguage.value === "ru") {
+        if (selectedLanguage.value === Language.RU) {
             fetchingRu();
-        } else if (selectedLanguage.value === "en") {
+        } else if (selectedLanguage.value === Language.EN) {
             fetchingEn();
-        } else {
+        } else if (selectedLanguage.value === Language.MOCK) {
             fetchingMock();
         }
     };

@@ -11,28 +11,30 @@
 </template>
 
 <script lang="ts" setup>
-import Header from "@/components/Header.vue";
-import TypingTest from "@/components/TypingTest.vue";
-import Loader from "@/components/icons/Loader.vue";
-import MyDialog from "@/components/UI/MyDialog.vue";
-import {useTextFetching} from "@/hooks/useTextFetching.ts";
 import {useStore} from "vuex";
 import {computed, watch} from "vue";
 import {useRoute, useRouter} from "vue-router";
+import {useTextFetching} from "../hooks/useTextFetching.ts";
+import TypingTest from "../components/TypingTest.vue";
+import MyDialog from "../components/UI/MyDialog.vue";
+import Loader from "../components/icons/Loader.vue";
+import {key} from "../store";
+import Header from "../components/Header.vue";
+import {LanguageValue} from "../types";
 
 const {text, isLoading, selectedLanguage} = useTextFetching();
 
-const store = useStore();
+const store = useStore(key);
 const router = useRouter();
 const route = useRoute();
 
-const language = computed({
+const language = computed<LanguageValue>({
     get: () => store.getters.getSelectedLanguage,
-    set: (value) => store.commit("setSelectedLanguage", value)
+    set: (value: LanguageValue) => store.commit("setSelectedLanguage", value)
 });
 
-selectedLanguage.value = <string>route.params.lang
-language.value = <string>route.params.lang
+selectedLanguage.value = <LanguageValue>route.params.lang
+language.value = <LanguageValue>route.params.lang
 
 watch(
     () => language.value,

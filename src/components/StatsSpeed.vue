@@ -1,5 +1,4 @@
 <template>
-    <strong>
         <div class="wrap">
           <div class="icon_wrap">
               <SpeedIcon :size="26" class="icon"/>
@@ -10,21 +9,21 @@
                <span class="speed_text">ЗН./МИН</span>
           </div>
       </div>
-    </strong>
 </template>
 
 <script lang="ts" setup>
-import {computed, ref, watch} from "vue";
+import {computed, Ref, ref, watch} from "vue";
 import SpeedIcon from "./icons/Speed.vue";
 import {useStore} from "vuex";
+import {key} from "../store";
 
-const store = useStore();
+const store = useStore(key);
 
-const time = computed(() => store.getters.getTime);
+const time = computed<number>(() => store.getters.getTime);
 
-const speed = computed(() => store.getters.getTypingSpeed)
+const speed = computed<number>(() => store.getters.getTypingSpeed)
 
-const overSpeed = ref(true)
+const overSpeed: Ref<boolean> = ref(true)
 
 watch(
     () => [time.value],
@@ -56,6 +55,7 @@ watch(
 .icon_text {
     padding: 1px;
     font-size: 26px;
+    font-weight: bold;
 }
 .speed {
     color: deepskyblue;
@@ -63,9 +63,11 @@ watch(
 .speed_value {
     font-size: 36px;
     padding: 1px;
+    font-weight: bolder;
 }
 .speed_text {
     font-size: 12px;
     padding: 1px;
+    font-weight: bolder;
 }
 </style>

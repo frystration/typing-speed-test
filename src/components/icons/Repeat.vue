@@ -4,7 +4,7 @@
         :aria-label="title"
         class="repeat-icon"
         role="img"
-        @click="$emit('click', $event)">
+        @click="changeOption">
       <svg
               :fill="fillColor"
               class="repeat-icon__svg"
@@ -19,22 +19,25 @@
   </span>
 </template>
 
-<script lang="ts">
-export default {
-    name: "RepeatIcon",
-    emits: ['click'],
-    props: {
-        title: {
-            type: String,
-        },
-        fillColor: {
-            type: String,
-            default: "currentColor"
-        },
-        size: {
-            type: Number,
-            default: 16
-        }
+<script setup lang="ts">
+defineProps({
+    title: {
+        type: String,
+        default: "repeat"
+    },
+    fillColor: {
+        type: String,
+        default: "currentColor"
+    },
+    size: {
+        type: Number,
+        default: 16
     }
-}
+
+});
+
+const emit = defineEmits<{ (event: 'click', data: MouseEvent): void }>();
+
+const changeOption = (event: MouseEvent) => {
+    emit('click', event)}
 </script>
