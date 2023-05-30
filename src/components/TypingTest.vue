@@ -53,18 +53,20 @@ const text: Ref<string> = ref("")
 const languageError: Ref<boolean> = ref(false)
 const successDialog: Ref<boolean> = ref(false)
 
-const handleKeyPress = (event) => {
-    if ((isEnglishLetter(event.key) && props.language === Language.RU)
-        || (isRussianLetter(event.key) && props.language === Language.EN)) {
+const handleKeyDown = (event) => {
+    const keyPressed = event.key;
+
+    if ((isEnglishLetter(keyPressed) && props.language === Language.RU)
+        || (isRussianLetter(keyPressed) && props.language === Language.EN)) {
         languageError.value = true
     }
-    if (text.value[selected.value] === event.key) {
+    if (text.value[selected.value] === keyPressed) {
         if (selected.value === 0) {
             store.dispatch("startTimer");
         }
         if (selected.value === text.value.length - 1) {
             successDialog.value = true
-            window.removeEventListener('keypress', handleKeyPress)
+            window.removeEventListener('keypress', handleKeyDown)
             store.dispatch("stopTimer");
         }
         store.commit("setError", false)
@@ -81,12 +83,12 @@ watch(
     () => [props.textValue],
     () => {
         text.value = <string>props.textValue
-        window.addEventListener("keypress", handleKeyPress)
+        window.addEventListener("keydown", handleKeyDown)
     },
     {immediate: true}
 )
 onBeforeUnmount(() => {
-    window.removeEventListener("keypress", handleKeyPress)
+    window.removeEventListener("keydown", handleKeyDown)
     store.dispatch("stopTimer");
     store.commit("resetState");
 })
